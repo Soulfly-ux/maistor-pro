@@ -1,4 +1,4 @@
-package bg.maistorpro.customer;
+package bg.angebotpilot.customer;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

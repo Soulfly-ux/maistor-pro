@@ -1,4 +1,4 @@
-package bg.maistorpro.customer;
+package bg.angebotpilot.customer;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

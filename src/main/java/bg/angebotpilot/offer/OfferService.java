@@ -1,7 +1,7 @@
-package bg.maistorpro.offer;
+package bg.angebotpilot.offer;
 
-import bg.maistorpro.customer.Customer;
-import bg.maistorpro.customer.CustomerRepository;
+import bg.angebotpilot.customer.Customer;
+import bg.angebotpilot.customer.CustomerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

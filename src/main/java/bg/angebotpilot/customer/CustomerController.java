@@ -1,4 +1,4 @@
-package bg.maistorpro.customer;
+package bg.angebotpilot.customer;
 
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;

@@ -1,12 +1,12 @@
-package bg.maistorpro;
+package bg.angebotpilot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MaistorProApplication {
+public class AngebotPilotApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MaistorProApplication.class, args);
+        SpringApplication.run(AngebotPilotApplication.class, args);
     }
 }

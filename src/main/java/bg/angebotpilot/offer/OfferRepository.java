@@ -1,4 +1,4 @@
-package bg.maistorpro.offer;
+package bg.angebotpilot.offer;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,4 @@
-package bg.maistorpro.offer;
+package bg.angebotpilot.offer;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMax;

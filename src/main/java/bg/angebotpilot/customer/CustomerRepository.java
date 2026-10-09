@@ -1,4 +1,4 @@
-package bg.maistorpro.customer;
+package bg.angebotpilot.customer;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

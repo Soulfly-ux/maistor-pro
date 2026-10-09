@@ -1,6 +1,6 @@
-package bg.maistorpro.offer;
+package bg.angebotpilot.offer;
 
-import bg.maistorpro.customer.CustomerRepository;
+import bg.angebotpilot.customer.CustomerRepository;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

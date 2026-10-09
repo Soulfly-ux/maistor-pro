@@ -1,4 +1,4 @@
-package bg.maistorpro.offer;
+package bg.angebotpilot.offer;
 
 public enum OfferStatus {
     DRAFT("Чернова"),

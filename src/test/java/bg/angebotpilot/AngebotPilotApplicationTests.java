@@ -1,10 +1,10 @@
-package bg.maistorpro;
+package bg.angebotpilot;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MaistorProApplicationTests {
+class AngebotPilotApplicationTests {
 
     @Test
     void contextLoads() {

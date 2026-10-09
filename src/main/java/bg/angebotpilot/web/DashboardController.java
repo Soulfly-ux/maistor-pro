@@ -1,8 +1,8 @@
-package bg.maistorpro.web;
+package bg.angebotpilot.web;
 
-import bg.maistorpro.customer.CustomerRepository;
-import bg.maistorpro.offer.OfferRepository;
-import bg.maistorpro.offer.OfferStatus;
+import bg.angebotpilot.customer.CustomerRepository;
+import bg.angebotpilot.offer.OfferRepository;
+import bg.angebotpilot.offer.OfferStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

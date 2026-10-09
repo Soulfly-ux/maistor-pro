@@ -1,4 +1,4 @@
-package bg.maistorpro.offer;
+package bg.angebotpilot.offer;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

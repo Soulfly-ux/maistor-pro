@@ -11,10 +11,10 @@
         <relativePath/>
     </parent>
 
-    <groupId>bg.maistorpro</groupId>
-    <artifactId>maistor-pro</artifactId>
+    <groupId>bg.angebotpilot</groupId>
+    <artifactId>angebot-pilot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Maistor Pro</name>
+    <name>AngebotPilot</name>
     <description>Offer management for Bulgarian tradespeople in German-speaking markets</description>
 
     <properties>

@@ -1,6 +1,6 @@
-package bg.maistorpro.offer;
+package bg.angebotpilot.offer;
 
-import bg.maistorpro.customer.Customer;
+import bg.angebotpilot.customer.Customer;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

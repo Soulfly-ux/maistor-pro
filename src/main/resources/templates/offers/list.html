@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Оферти')}"></head>
+<body>
+<header th:replace="~{fragments :: navigation}"></header>
+
+<main class="page-shell">
+    <div th:replace="~{fragments :: flash}"></div>
+    <section class="page-heading">
+        <div>
+            <p class="eyebrow">Продажби</p>
+            <h1>Оферти</h1>
+            <p>Всички предложения към клиентите ти на едно място.</p>
+        </div>
+        <a class="button" th:href="@{/offers/new}">+ Нова оферта</a>
+    </section>
+
+    <section class="panel">
+        <div class="empty-state" th:if="${#lists.isEmpty(offers)}">
+            <h3>Все още няма оферти</h3>
+            <p>Добави клиент и подготви първото си предложение.</p>
+            <a class="button button-secondary" th:href="@{/offers/new}">Създай оферта</a>
+        </div>
+
+        <div class="table-wrap" th:unless="${#lists.isEmpty(offers)}">
+            <table>
+                <thead>
+                <tr><th>Номер</th><th>Описание</th><th>Клиент</th><th>Валидна до</th><th>Сума</th><th>Статус</th></tr>
+                </thead>
+                <tbody>
+                <tr th:each="offer : ${offers}">
+                    <td><a th:href="@{/offers/{id}(id=${offer.id})}" th:text="${offer.offerNumber}">ANG-2026-0001</a></td>
+                    <td th:text="${offer.title}">Renovierung</td>
+                    <td th:text="${offer.customer.displayName}">Клиент</td>
+                    <td th:text="${#temporals.format(offer.validUntil, 'dd.MM.yyyy')}">01.01.2026</td>
+                    <td class="money" th:text="${offer.totalGross} + ' €'">0.00 €</td>
+                    <td><span class="status" th:classappend="${offer.status.name().toLowerCase()}" th:text="${offer.status.label}">Чернова</span></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Оферта')}"></head>
+<body>
+<header th:replace="~{fragments :: navigation}"></header>
+
+<main class="page-shell narrow-document">
+    <div th:replace="~{fragments :: flash}"></div>
+    <div class="document-actions">
+        <a class="text-link" th:href="@{/offers}">← Всички оферти</a>
+        <form class="status-form" th:action="@{/offers/{id}/status(id=${offer.id})}" method="post">
+            <label for="offer-status">Статус</label>
+            <select id="offer-status" name="status" onchange="this.form.submit()">
+                <option th:each="status : ${statuses}"
+                        th:value="${status}"
+                        th:text="${status.label}"
+                        th:selected="${status == offer.status}"></option>
+            </select>
+        </form>
+    </div>
+
+    <article class="offer-document">
+        <header class="document-header">
+            <div>
+                <p class="document-brand">MAISTOR PRO</p>
+                <h1>Angebot</h1>
+            </div>
+            <dl>
+                <div><dt>Angebotsnummer</dt><dd th:text="${offer.offerNumber}">ANG-2026-0001</dd></div>
+                <div><dt>Datum</dt><dd th:text="${#temporals.format(offer.issueDate, 'dd.MM.yyyy')}">01.01.2026</dd></div>
+                <div><dt>Gültig bis</dt><dd th:text="${#temporals.format(offer.validUntil, 'dd.MM.yyyy')}">15.01.2026</dd></div>
+            </dl>
+        </header>
+
+        <section class="document-customer">
+            <p>Angebot für</p>
+            <h2 th:text="${offer.customer.displayName}">Kunde GmbH</h2>
+            <div th:if="${offer.customer.companyName != null and !offer.customer.companyName.isBlank()}" th:text="${offer.customer.name}">Ivan Petrov</div>
+            <div th:if="${offer.customer.street != null and !offer.customer.street.isBlank()}" th:text="${offer.customer.street}">Straße 1</div>
+            <div th:if="${offer.customer.city != null and !offer.customer.city.isBlank()}" th:text="${offer.customer.postalCode + ' ' + offer.customer.city}">1010 Wien</div>
+        </section>
+
+        <h2 class="document-title" th:text="${offer.title}">Malerarbeiten</h2>
+
+        <table class="document-table">
+            <thead><tr><th>Beschreibung</th><th>Menge</th><th>Einzelpreis</th><th>Gesamt</th></tr></thead>
+            <tbody>
+            <tr th:each="item : ${offer.items}">
+                <td th:text="${item.description}">Arbeit</td>
+                <td th:text="${item.quantity + ' ' + item.unit}">1 Stk.</td>
+                <td class="money" th:text="${item.unitPrice} + ' €'">0.00 €</td>
+                <td class="money" th:text="${item.subtotal} + ' €'">0.00 €</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="document-totals">
+            <div><span>Zwischensumme</span><strong th:text="${offer.totalNet} + ' €'">0.00 €</strong></div>
+            <div><span th:text="${'USt. ' + offer.taxRate + '%'}">USt. 20%</span><strong th:text="${offer.taxAmount} + ' €'">0.00 €</strong></div>
+            <div class="grand-total"><span>Gesamtbetrag</span><strong th:text="${offer.totalGross} + ' €'">0.00 €</strong></div>
+        </div>
+
+        <section class="document-notes" th:if="${offer.notes != null and !offer.notes.isBlank()}">
+            <h3>Anmerkungen</h3>
+            <p th:text="${offer.notes}">Zahlungsbedingungen</p>
+        </section>
+    </article>
+
+    <p class="prototype-note">Това е визуален преглед. Фирмените данни и свалянето като PDF ще добавим в следващия етап.</p>
+</main>
+</body>
+</html>

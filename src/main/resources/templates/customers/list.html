@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Клиенти')}"></head>
+<body>
+<header th:replace="~{fragments :: navigation}"></header>
+
+<main class="page-shell">
+    <div th:replace="~{fragments :: flash}"></div>
+    <section class="page-heading">
+        <div>
+            <p class="eyebrow">Контакти</p>
+            <h1>Клиенти</h1>
+            <p>Информацията тук ще се попълва автоматично в офертите.</p>
+        </div>
+        <a class="button" th:href="@{/customers/new}">+ Нов клиент</a>
+    </section>
+
+    <section class="panel">
+        <div class="empty-state" th:if="${#lists.isEmpty(customers)}">
+            <h3>Добави първия си клиент</h3>
+            <p>Необходими са само име и основни данни за контакт.</p>
+            <a class="button button-secondary" th:href="@{/customers/new}">Добави клиент</a>
+        </div>
+
+        <div class="customer-grid" th:unless="${#lists.isEmpty(customers)}">
+            <article class="customer-card" th:each="customer : ${customers}">
+                <div class="avatar" th:text="${#strings.substring(customer.displayName, 0, 1)}">K</div>
+                <div>
+                    <h2 th:text="${customer.displayName}">Фирма</h2>
+                    <p th:if="${customer.companyName != null and !customer.companyName.isBlank()}" th:text="${customer.name}">Лице</p>
+                    <p th:if="${customer.email != null and !customer.email.isBlank()}" th:text="${customer.email}">mail@example.com</p>
+                    <p th:if="${customer.city != null and !customer.city.isBlank()}" th:text="${customer.postalCode + ' ' + customer.city}">1010 Wien</p>
+                    <a class="text-link" th:href="@{/offers/new(customerId=${customer.id})}">Нова оферта →</a>
+                </div>
+            </article>
+        </div>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Нов клиент')}"></head>
+<body>
+<header th:replace="~{fragments :: navigation}"></header>
+
+<main class="page-shell narrow">
+    <section class="page-heading">
+        <div>
+            <p class="eyebrow">Нова регистрация</p>
+            <h1>Добави клиент</h1>
+            <p>Можеш да допълниш останалата информация и по-късно.</p>
+        </div>
+    </section>
+
+    <form class="panel form-panel" th:action="@{/customers}" th:object="${customerForm}" method="post">
+        <div class="form-grid two-columns">
+            <label>
+                Име на лице <span class="required">*</span>
+                <input type="text" th:field="*{name}" placeholder="Ivan Petrov">
+                <small class="field-error" th:errors="*{name}"></small>
+            </label>
+            <label>
+                Фирма
+                <input type="text" th:field="*{companyName}" placeholder="Petrov Ausbau e.U.">
+                <small class="field-error" th:errors="*{companyName}"></small>
+            </label>
+            <label>
+                Имейл
+                <input type="email" th:field="*{email}" placeholder="office@example.at">
+                <small class="field-error" th:errors="*{email}"></small>
+            </label>
+            <label>
+                Телефон
+                <input type="tel" th:field="*{phone}" placeholder="+43 660 1234567">
+            </label>
+            <label class="full-width">
+                Улица и номер
+                <input type="text" th:field="*{street}" placeholder="Musterstraße 12">
+            </label>
+            <label>
+                Пощенски код
+                <input type="text" th:field="*{postalCode}" placeholder="1010">
+            </label>
+            <label>
+                Град
+                <input type="text" th:field="*{city}" placeholder="Wien">
+            </label>
+            <label class="full-width">
+                Държава
+                <input type="text" th:field="*{country}">
+            </label>
+        </div>
+
+        <div class="form-actions">
+            <a class="button button-ghost" th:href="@{/customers}">Отказ</a>
+            <button class="button" type="submit">Запази клиента</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title} + ' · Майстор Pro'">Майстор Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header class="app-header" th:fragment="navigation">
+    <a class="brand" th:href="@{/}">
+        <span class="brand-mark">M</span>
+        <span>Майстор <strong>Pro</strong></span>
+    </a>
+    <nav>
+        <a th:href="@{/}">Табло</a>
+        <a th:href="@{/customers}">Клиенти</a>
+        <a th:href="@{/offers}">Оферти</a>
+    </nav>
+    <a class="button button-small" th:href="@{/offers/new}">+ Нова оферта</a>
+</header>
+
+<div class="flash success" th:fragment="flash" th:if="${successMessage}" th:text="${successMessage}"></div>
+</body>
+</html>

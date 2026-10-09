@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: maistor-pro
+  datasource:
+    url: jdbc:h2:file:./data/maistorpro;AUTO_SERVER=TRUE
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  thymeleaf:
+    cache: false
+
+server:
+  error:
+    include-message: always

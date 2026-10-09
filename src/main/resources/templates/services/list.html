@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Услуги')}"></head>
+<body>
+<header th:replace="~{fragments :: navigation}"></header>
+
+<main class="page-shell">
+    <div th:replace="~{fragments :: flash}"></div>
+    <section class="page-heading">
+        <div>
+            <p class="eyebrow">Личен каталог</p>
+            <h1>Услуги</h1>
+            <p>Запази често използваните дейности и цени, за да ги добавяш в оферта с един клик.</p>
+        </div>
+        <a class="button" th:href="@{/services/new}">+ Нова услуга</a>
+    </section>
+
+    <section class="panel">
+        <div class="empty-state" th:if="${#lists.isEmpty(services)}">
+            <h3>Каталогът е празен</h3>
+            <p>Добави първата си услуга, например боядисване, монтаж или подготовка.</p>
+            <a class="button button-secondary" th:href="@{/services/new}">Добави услуга</a>
+        </div>
+
+        <div class="service-grid" th:unless="${#lists.isEmpty(services)}">
+            <article class="service-card" th:each="service : ${services}" th:classappend="${!service.active} ? ' inactive' : ''">
+                <div class="service-card-topline">
+                    <span class="service-category" th:text="${service.category != null ? service.category : 'Обща услуга'}">Категория</span>
+                    <span class="status" th:classappend="${service.active} ? 'accepted' : 'rejected'"
+                          th:text="${service.active} ? 'Активна' : 'Архивирана'">Активна</span>
+                </div>
+                <h2 th:text="${service.name}">Боядисване</h2>
+                <p th:text="${service.offerDescription}">Wände streichen</p>
+                <div class="service-price">
+                    <strong th:text="${service.defaultPrice + ' €'}">0.00 €</strong>
+                    <span th:text="${'/ ' + service.unit}">/ Std.</span>
+                </div>
+                <form th:action="@{/services/{id}/toggle(id=${service.id})}" method="post">
+                    <button class="text-button" type="submit" th:text="${service.active} ? 'Архивирай' : 'Активирай'">Архивирай</button>
+                </form>
+            </article>
+        </div>
+    </section>
+</main>
+</body>
+</html>

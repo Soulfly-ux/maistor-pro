@@ -58,6 +58,25 @@
                 <div><h2>Позиции</h2><p>Опиши работата, количеството и цената без данък.</p></div>
             </div>
 
+            <div class="catalog-picker" th:if="${!#lists.isEmpty(serviceCatalog)}">
+                <div class="catalog-picker-heading">
+                    <div><strong>Добави от каталога</strong><span>Цената може да бъде променена след добавяне.</span></div>
+                    <a class="text-link" th:href="@{/services}">Управление</a>
+                </div>
+                <div class="catalog-chips">
+                    <button class="service-preset" type="button" th:each="service : ${serviceCatalog}"
+                            th:attr="data-description=${service.offerDescription},data-unit=${service.unit},data-price=${service.defaultPrice}">
+                        <span th:text="${service.name}">Боядисване</span>
+                        <small th:text="${service.defaultPrice + ' € / ' + service.unit}">25 € / m²</small>
+                    </button>
+                </div>
+            </div>
+
+            <div class="catalog-empty-inline" th:if="${#lists.isEmpty(serviceCatalog)}">
+                Все още нямаш запазени услуги. Можеш да въвеждаш позициите ръчно или да
+                <a th:href="@{/services/new}">добавиш услуга в каталога</a>.
+            </div>
+
             <div class="line-items" id="line-items">
                 <div class="line-item" th:each="item, stat : *{items}">
                     <label class="item-description">

@@ -14,5 +14,8 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
     @EntityGraph(attributePaths = {"customer", "items"})
     Optional<Offer> findDetailedById(Long id);
 
+    @EntityGraph(attributePaths = {"customer", "items"})
+    Optional<Offer> findDetailedByPublicToken(String publicToken);
+
     long countByStatus(OfferStatus status);
 }

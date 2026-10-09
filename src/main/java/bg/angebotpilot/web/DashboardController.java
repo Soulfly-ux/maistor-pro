@@ -1,6 +1,7 @@
 package bg.angebotpilot.web;
 
 import bg.angebotpilot.company.CompanyProfileService;
+import bg.angebotpilot.catalog.ServiceItemRepository;
 import bg.angebotpilot.customer.CustomerRepository;
 import bg.angebotpilot.offer.OfferRepository;
 import bg.angebotpilot.offer.OfferStatus;
@@ -14,18 +15,22 @@ public class DashboardController {
     private final CustomerRepository customerRepository;
     private final OfferRepository offerRepository;
     private final CompanyProfileService companyProfileService;
+    private final ServiceItemRepository serviceItemRepository;
 
     public DashboardController(CustomerRepository customerRepository,
                                OfferRepository offerRepository,
-                               CompanyProfileService companyProfileService) {
+                               CompanyProfileService companyProfileService,
+                               ServiceItemRepository serviceItemRepository) {
         this.customerRepository = customerRepository;
         this.offerRepository = offerRepository;
         this.companyProfileService = companyProfileService;
+        this.serviceItemRepository = serviceItemRepository;
     }
 
     @GetMapping("/")
     public String dashboard(Model model) {
         model.addAttribute("customerCount", customerRepository.count());
+        model.addAttribute("serviceCount", serviceItemRepository.count());
         model.addAttribute("offerCount", offerRepository.count());
         model.addAttribute("acceptedOfferCount", offerRepository.countByStatus(OfferStatus.ACCEPTED));
         model.addAttribute("companyProfileConfigured", companyProfileService.findProfile().isPresent());

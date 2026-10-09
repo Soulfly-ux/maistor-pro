@@ -14,13 +14,33 @@
         <a class="button" th:href="@{/offers/new}">Създай оферта</a>
     </section>
 
-    <div class="notice onboarding-notice" th:unless="${companyProfileConfigured}">
-        <div>
-            <strong>Подготви професионалните PDF оферти</strong>
-            <span>Добави фирмените, данъчните и банковите си данни.</span>
+    <section class="setup-panel">
+        <div class="panel-heading">
+            <div>
+                <p class="eyebrow">Работен процес</p>
+                <h2>От настройката до приетата оферта</h2>
+            </div>
+            <span class="setup-caption">Всичко остава в личното ти пространство</span>
         </div>
-        <a class="button button-small button-secondary" th:href="@{/company}">Попълни профила</a>
-    </div>
+        <div class="setup-grid">
+            <a class="setup-step" th:classappend="${companyProfileConfigured} ? ' done' : ''" th:href="@{/company}">
+                <span th:text="${companyProfileConfigured} ? '✓' : '1'">1</span>
+                <div><strong>Фирмен профил</strong><small>Данни за PDF документите</small></div>
+            </a>
+            <a class="setup-step" th:classappend="${serviceCount > 0} ? ' done' : ''" th:href="@{/services}">
+                <span th:text="${serviceCount > 0} ? '✓' : '2'">2</span>
+                <div><strong>Лични услуги</strong><small>Готови дейности и цени</small></div>
+            </a>
+            <a class="setup-step" th:classappend="${customerCount > 0} ? ' done' : ''" th:href="@{/customers}">
+                <span th:text="${customerCount > 0} ? '✓' : '3'">3</span>
+                <div><strong>Клиенти</strong><small>Частни лица или фирми</small></div>
+            </a>
+            <a class="setup-step" th:classappend="${offerCount > 0} ? ' done' : ''" th:href="@{/offers}">
+                <span th:text="${offerCount > 0} ? '✓' : '4'">4</span>
+                <div><strong>Персонална оферта</strong><small>PDF и клиентски линк</small></div>
+            </a>
+        </div>
+    </section>
 
     <section class="stats-grid">
         <article class="stat-card">

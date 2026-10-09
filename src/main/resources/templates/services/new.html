@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Нова услуга')}"></head>
+<body>
+<header th:replace="~{fragments :: navigation}"></header>
+
+<main class="page-shell narrow">
+    <section class="page-heading">
+        <div>
+            <p class="eyebrow">Личен каталог</p>
+            <h1>Добави услуга</h1>
+            <p>Името е за теб, а немското описание ще се прехвърля в офертата.</p>
+        </div>
+    </section>
+
+    <form class="panel form-panel" th:action="@{/services}" th:object="${serviceItemForm}" method="post">
+        <div class="form-grid two-columns">
+            <label>
+                Име на услугата <span class="required">*</span>
+                <input type="text" th:field="*{name}" placeholder="Боядисване на стени">
+                <small class="field-error" th:errors="*{name}"></small>
+            </label>
+            <label>
+                Категория
+                <input type="text" th:field="*{category}" placeholder="Бояджийски услуги">
+                <small class="field-error" th:errors="*{category}"></small>
+            </label>
+            <label class="full-width">
+                Описание за немската оферта
+                <input type="text" th:field="*{description}" placeholder="Wände zweimal streichen, inkl. Abdeckung">
+                <small class="field-error" th:errors="*{description}"></small>
+            </label>
+            <label>
+                Мерна единица <span class="required">*</span>
+                <input type="text" th:field="*{unit}" placeholder="m², Std., Stk., Pauschale">
+                <small class="field-error" th:errors="*{unit}"></small>
+            </label>
+            <label>
+                Стандартна нетна цена (€) <span class="required">*</span>
+                <input type="number" step="0.01" min="0" th:field="*{defaultPrice}" placeholder="25.00">
+                <small class="field-error" th:errors="*{defaultPrice}"></small>
+            </label>
+        </div>
+
+        <div class="form-actions">
+            <a class="button button-ghost" th:href="@{/services}">Отказ</a>
+            <button class="button" type="submit">Запази услугата</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

@@ -2,6 +2,7 @@ package bg.angebotpilot.offer;
 
 import bg.angebotpilot.company.CompanyProfile;
 import bg.angebotpilot.company.CompanyProfileService;
+import bg.angebotpilot.catalog.ServiceItemRepository;
 import bg.angebotpilot.customer.CustomerRepository;
 import jakarta.validation.Valid;
 import org.springframework.http.ContentDisposition;
@@ -30,17 +31,20 @@ public class OfferController {
     private final OfferService offerService;
     private final CompanyProfileService companyProfileService;
     private final OfferPdfService offerPdfService;
+    private final ServiceItemRepository serviceItemRepository;
 
     public OfferController(OfferRepository offerRepository,
                            CustomerRepository customerRepository,
                            OfferService offerService,
                            CompanyProfileService companyProfileService,
-                           OfferPdfService offerPdfService) {
+                           OfferPdfService offerPdfService,
+                           ServiceItemRepository serviceItemRepository) {
         this.offerRepository = offerRepository;
         this.customerRepository = customerRepository;
         this.offerService = offerService;
         this.companyProfileService = companyProfileService;
         this.offerPdfService = offerPdfService;
+        this.serviceItemRepository = serviceItemRepository;
     }
 
     @GetMapping
@@ -56,7 +60,7 @@ public class OfferController {
             form.setCustomerId(customerId);
             model.addAttribute("offerForm", form);
         }
-        addCustomers(model);
+        addFormOptions(model);
         return "offers/new";
     }
 
@@ -72,7 +76,7 @@ public class OfferController {
         }
 
         if (bindingResult.hasErrors()) {
-            addCustomers(model);
+            addFormOptions(model);
             return "offers/new";
         }
 
@@ -84,7 +88,7 @@ public class OfferController {
 
     @GetMapping("/{id}")
     public String details(@PathVariable Long id, Model model) {
-        model.addAttribute("offer", offerService.getDetailed(id));
+        model.addAttribute("offer", offerService.getDetailedForOwner(id));
         model.addAttribute("statuses", OfferStatus.values());
         model.addAttribute("companyProfile", companyProfileService.findProfile().orElse(null));
         return "offers/detail";
@@ -117,7 +121,8 @@ public class OfferController {
         return "redirect:/offers/" + id;
     }
 
-    private void addCustomers(Model model) {
+    private void addFormOptions(Model model) {
         model.addAttribute("customers", customerRepository.findAllByOrderByCompanyNameAscNameAsc());
+        model.addAttribute("serviceCatalog", serviceItemRepository.findByActiveTrueOrderByCategoryAscNameAsc());
     }
 }

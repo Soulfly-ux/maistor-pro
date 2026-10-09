@@ -48,6 +48,31 @@ public class OfferService {
     }
 
     @Transactional
+    public Offer getDetailedForOwner(Long id) {
+        Offer offer = offerRepository.findDetailedById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Офертата не беше намерена"));
+        offer.ensurePublicToken();
+        return offer;
+    }
+
+    @Transactional(readOnly = true)
+    public Offer getDetailedByPublicToken(String publicToken) {
+        return offerRepository.findDetailedByPublicToken(publicToken)
+                .orElseThrow(() -> new EntityNotFoundException("Офертата не беше намерена"));
+    }
+
+    @Transactional
+    public Offer recordCustomerDecision(String publicToken, OfferStatus decision, String note) {
+        Offer offer = offerRepository.findDetailedByPublicToken(publicToken)
+                .orElseThrow(() -> new EntityNotFoundException("Офертата не беше намерена"));
+        if (offer.getCustomerRespondedAt() == null && offer.isExpired()) {
+            throw new IllegalStateException("Срокът за приемане на тази оферта е изтекъл");
+        }
+        offer.recordCustomerDecision(decision, note);
+        return offer;
+    }
+
+    @Transactional
     public Offer changeStatus(Long id, OfferStatus status) {
         Offer offer = offerRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Офертата не беше намерена"));

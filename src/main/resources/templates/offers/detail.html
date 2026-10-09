@@ -28,6 +28,30 @@
         <a th:href="@{/company}">фирмения профил →</a>
     </div>
 
+    <section class="share-panel" th:if="${companyProfile != null}">
+        <div>
+            <p class="eyebrow">Линк за клиента</p>
+            <h2>Изпрати офертата за преглед и приемане</h2>
+            <p>Линкът отваря само тази оферта. Клиентът не вижда таблото, другите клиенти или други оферти.</p>
+        </div>
+        <div class="share-controls">
+            <input id="client-share-link" type="text" readonly
+                   th:attr="data-path=@{/a/{token}(token=${offer.publicToken})}"
+                   aria-label="Клиентски линк">
+            <button class="button button-small" id="copy-client-link" type="button">Копирай линка</button>
+            <a class="button button-small button-ghost" target="_blank" rel="noopener"
+               th:href="@{/a/{token}(token=${offer.publicToken})}">Преглед</a>
+        </div>
+        <p class="share-local-note" id="share-local-note" hidden>
+            Адрес с <strong>localhost</strong> работи само на този компютър. Когато публикуваме приложението, линкът ще може да се изпраща на клиента.
+        </p>
+        <div class="customer-response-summary" th:if="${offer.customerRespondedAt != null}">
+            <strong th:text="${offer.status.label}">Приета</strong>
+            <span th:text="${#temporals.format(offer.customerRespondedAt, 'dd.MM.yyyy HH:mm')}">01.01.2026 12:00</span>
+            <p th:if="${offer.customerResponseNote != null}" th:text="${offer.customerResponseNote}">Коментар</p>
+        </div>
+    </section>
+
     <article class="offer-document">
         <header class="document-header">
             <div>
@@ -95,5 +119,26 @@
         </footer>
     </article>
 </main>
+<script>
+    const shareInput = document.querySelector('#client-share-link');
+    const copyButton = document.querySelector('#copy-client-link');
+    const localNote = document.querySelector('#share-local-note');
+    if (shareInput && copyButton) {
+        shareInput.value = new URL(shareInput.dataset.path, window.location.origin).href;
+        if (localNote && ['localhost', '127.0.0.1'].includes(window.location.hostname)) {
+            localNote.hidden = false;
+        }
+        copyButton.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(shareInput.value);
+            } catch (error) {
+                shareInput.select();
+                document.execCommand('copy');
+            }
+            copyButton.textContent = 'Копирано';
+            setTimeout(() => copyButton.textContent = 'Копирай линка', 1600);
+        });
+    }
+</script>
 </body>
 </html>

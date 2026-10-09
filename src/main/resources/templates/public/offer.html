@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Ihr Angebot')}"></head>
+<body class="public-page">
+<header class="public-header">
+    <a class="brand" th:href="@{/a/{token}(token=${offer.publicToken})}">
+        <span class="brand-mark">A</span>
+        <span>Angebot<strong>Pilot</strong></span>
+    </a>
+    <span>Sicherer Angebotslink</span>
+</header>
+
+<main class="public-shell">
+    <div class="flash success" th:if="${publicMessage}" th:text="${publicMessage}"></div>
+
+    <section class="public-intro">
+        <div>
+            <p class="eyebrow">Persönliches Angebot</p>
+            <h1 th:text="${offer.title}">Malerarbeiten</h1>
+            <p>
+                Für <strong th:text="${offer.customer.displayName}">Kunde</strong>
+                von <strong th:text="${companyProfile != null ? companyProfile.companyName : 'Ihrem Handwerksbetrieb'}">Firma</strong>
+            </p>
+        </div>
+        <a class="button button-secondary" th:if="${companyProfile != null}"
+           th:href="@{/a/{token}/pdf(token=${offer.publicToken})}">PDF herunterladen</a>
+    </section>
+
+    <article class="public-offer-card">
+        <div class="public-metadata">
+            <div><span>Angebotsnummer</span><strong th:text="${offer.offerNumber}">ANG-2026-0001</strong></div>
+            <div><span>Datum</span><strong th:text="${#temporals.format(offer.issueDate, 'dd.MM.yyyy')}">01.01.2026</strong></div>
+            <div><span>Gültig bis</span><strong th:text="${#temporals.format(offer.validUntil, 'dd.MM.yyyy')}">15.01.2026</strong></div>
+        </div>
+
+        <div class="table-wrap">
+            <table class="document-table">
+                <thead><tr><th>Beschreibung</th><th>Menge</th><th>Einzelpreis</th><th>Gesamt</th></tr></thead>
+                <tbody>
+                <tr th:each="item : ${offer.items}">
+                    <td th:text="${item.description}">Arbeit</td>
+                    <td th:text="${item.quantity + ' ' + item.unit}">1 Stk.</td>
+                    <td class="money" th:text="${item.unitPrice} + ' €'">0.00 €</td>
+                    <td class="money" th:text="${item.subtotal} + ' €'">0.00 €</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="document-totals">
+            <div><span>Zwischensumme</span><strong th:text="${offer.totalNet} + ' €'">0.00 €</strong></div>
+            <div><span th:text="${'USt. ' + offer.taxRate + '%'}">USt. 20%</span><strong th:text="${offer.taxAmount} + ' €'">0.00 €</strong></div>
+            <div class="grand-total"><span>Gesamtbetrag</span><strong th:text="${offer.totalGross} + ' €'">0.00 €</strong></div>
+        </div>
+
+        <section class="document-notes" th:if="${offer.notes != null and !offer.notes.isBlank()}">
+            <h3>Anmerkungen</h3>
+            <p th:text="${offer.notes}">Zahlungsbedingungen</p>
+        </section>
+    </article>
+
+    <section class="response-card accepted-response" th:if="${offer.status.name() == 'ACCEPTED'}">
+        <p class="eyebrow">Rückmeldung übermittelt</p>
+        <h2>Dieses Angebot wurde angenommen.</h2>
+        <p th:if="${offer.customerResponseNote != null}" th:text="${offer.customerResponseNote}">Kommentar</p>
+    </section>
+
+    <section class="response-card rejected-response" th:if="${offer.status.name() == 'REJECTED'}">
+        <p class="eyebrow">Rückmeldung übermittelt</p>
+        <h2>Dieses Angebot wurde abgelehnt.</h2>
+        <p th:if="${offer.customerResponseNote != null}" th:text="${offer.customerResponseNote}">Kommentar</p>
+    </section>
+
+    <section class="response-card" th:if="${offer.status.name() != 'ACCEPTED' and offer.status.name() != 'REJECTED' and !offer.expired}">
+        <p class="eyebrow">Ihre Entscheidung</p>
+        <h2>Angebot annehmen oder ablehnen</h2>
+        <p>Sie können optional eine Nachricht an den Betrieb hinterlassen.</p>
+        <form th:action="@{/a/{token}/response(token=${offer.publicToken})}" method="post">
+            <label>
+                Nachricht (optional)
+                <textarea name="note" rows="3" maxlength="1000" placeholder="Ihre Nachricht..."></textarea>
+            </label>
+            <div class="public-response-actions">
+                <button class="button button-ghost danger-button" type="submit" name="decision" value="REJECTED">Ablehnen</button>
+                <button class="button" type="submit" name="decision" value="ACCEPTED">Angebot annehmen</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="response-card rejected-response" th:if="${offer.expired and offer.status.name() != 'ACCEPTED' and offer.status.name() != 'REJECTED'}">
+        <h2>Die Gültigkeit dieses Angebots ist abgelaufen.</h2>
+        <p>Bitte kontaktieren Sie den Betrieb für ein aktualisiertes Angebot.</p>
+    </section>
+</main>
+</body>
+</html>

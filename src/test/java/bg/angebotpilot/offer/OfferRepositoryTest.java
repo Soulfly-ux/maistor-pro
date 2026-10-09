@@ -36,5 +36,10 @@ class OfferRepositoryTest {
 
         assertThat(offers).hasSize(1);
         assertThat(offers.get(0).getTotalGross()).isEqualByComparingTo("150.00");
+        assertThat(offerRepository.findDetailedByPublicToken(offer.getPublicToken()))
+                .isPresent()
+                .get()
+                .extracting(Offer::getOfferNumber)
+                .isEqualTo("ANG-2026-0001");
     }
 }

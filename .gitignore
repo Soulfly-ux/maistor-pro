@@ -8,4 +8,5 @@ data/
 *.mv.db
 *.trace.db
 .DS_Store
+desktop.ini
 .refact/

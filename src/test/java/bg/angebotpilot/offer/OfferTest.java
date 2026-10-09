@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class OfferTest {
 
@@ -25,5 +26,39 @@ class OfferTest {
         assertThat(offer.getTotalNet()).isEqualByComparingTo("992.50");
         assertThat(offer.getTaxAmount()).isEqualByComparingTo("198.50");
         assertThat(offer.getTotalGross()).isEqualByComparingTo("1191.00");
+    }
+
+    @Test
+    void recordsTheCustomersDecisionOnlyOnce() {
+        Offer offer = createOffer(LocalDate.now().plusDays(14));
+
+        offer.recordCustomerDecision(OfferStatus.ACCEPTED, " Bitte Termin bestätigen. ");
+
+        assertThat(offer.getStatus()).isEqualTo(OfferStatus.ACCEPTED);
+        assertThat(offer.getCustomerResponseNote()).isEqualTo("Bitte Termin bestätigen.");
+        assertThat(offer.getCustomerRespondedAt()).isNotNull();
+        assertThat(offer.getPublicToken()).isNotBlank();
+
+        offer.recordCustomerDecision(OfferStatus.ACCEPTED, "ignored duplicate");
+
+        assertThat(offer.getCustomerResponseNote()).isEqualTo("Bitte Termin bestätigen.");
+        assertThatThrownBy(() -> offer.recordCustomerDecision(OfferStatus.REJECTED, null))
+                .isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
+    void recognizesAnExpiredOffer() {
+        Offer offer = createOffer(LocalDate.now().minusDays(1));
+
+        assertThat(offer.isExpired()).isTrue();
+    }
+
+    private Offer createOffer(LocalDate validUntil) {
+        Customer customer = new Customer(
+                "Ivan Petrov", "Petrov Ausbau e.U.", "ivan@example.at", null,
+                "Musterstraße 1", "1010", "Wien", "Österreich");
+        return new Offer(
+                "ANG-2026-0001", "Malerarbeiten", LocalDate.now(), validUntil,
+                BigDecimal.valueOf(20), null, customer);
     }
 }

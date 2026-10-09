@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Фирмен профил')}"></head>
+<body>
+<header th:replace="~{fragments :: navigation}"></header>
+
+<main class="page-shell">
+    <div th:replace="~{fragments :: flash}"></div>
+
+    <section class="page-heading">
+        <div>
+            <p class="eyebrow">Настройки на документите</p>
+            <h1>Фирмен профил</h1>
+            <p>Тези данни ще се изписват като подател и информация за плащане във всяка PDF оферта.</p>
+        </div>
+    </section>
+
+    <form class="offer-form" th:action="@{/company}" th:object="${companyProfileForm}" method="post">
+        <section class="panel form-panel">
+            <div class="section-title">
+                <span>1</span>
+                <div><h2>Основни данни</h2><p>Име на фирмата и координати за връзка.</p></div>
+            </div>
+
+            <div class="form-grid two-columns">
+                <label class="full-width">
+                    Име на фирмата <span class="required">*</span>
+                    <input type="text" th:field="*{companyName}" placeholder="Petrov Ausbau e.U." autocomplete="organization">
+                    <small class="field-error" th:errors="*{companyName}"></small>
+                </label>
+                <label>
+                    Собственик / лице за контакт
+                    <input type="text" th:field="*{ownerName}" placeholder="Ivan Petrov" autocomplete="name">
+                    <small class="field-error" th:errors="*{ownerName}"></small>
+                </label>
+                <label>
+                    Имейл <span class="required">*</span>
+                    <input type="email" th:field="*{email}" placeholder="office@example.at" autocomplete="email">
+                    <small class="field-error" th:errors="*{email}"></small>
+                </label>
+                <label>
+                    Телефон
+                    <input type="tel" th:field="*{phone}" placeholder="+43 660 1234567" autocomplete="tel">
+                </label>
+                <label>
+                    Уебсайт
+                    <input type="text" th:field="*{website}" placeholder="www.example.at" autocomplete="url">
+                </label>
+            </div>
+        </section>
+
+        <section class="panel form-panel">
+            <div class="section-title">
+                <span>2</span>
+                <div><h2>Адрес</h2><p>Официалният адрес, който клиентът ще вижда в документа.</p></div>
+            </div>
+
+            <div class="form-grid two-columns">
+                <label class="full-width">
+                    Улица и номер <span class="required">*</span>
+                    <input type="text" th:field="*{street}" placeholder="Musterstraße 12" autocomplete="street-address">
+                    <small class="field-error" th:errors="*{street}"></small>
+                </label>
+                <label>
+                    Пощенски код <span class="required">*</span>
+                    <input type="text" th:field="*{postalCode}" placeholder="1010" autocomplete="postal-code">
+                    <small class="field-error" th:errors="*{postalCode}"></small>
+                </label>
+                <label>
+                    Град <span class="required">*</span>
+                    <input type="text" th:field="*{city}" placeholder="Wien" autocomplete="address-level2">
+                    <small class="field-error" th:errors="*{city}"></small>
+                </label>
+                <label class="full-width">
+                    Държава <span class="required">*</span>
+                    <input type="text" th:field="*{country}" autocomplete="country-name">
+                    <small class="field-error" th:errors="*{country}"></small>
+                </label>
+            </div>
+        </section>
+
+        <section class="panel form-panel">
+            <div class="section-title">
+                <span>3</span>
+                <div><h2>Данъчни и банкови данни</h2><p>Попълни само полетата, които са приложими за твоята фирма.</p></div>
+            </div>
+
+            <div class="form-grid two-columns">
+                <label>
+                    Steuernummer
+                    <input type="text" th:field="*{taxNumber}" placeholder="12/345/67890">
+                </label>
+                <label>
+                    UID / USt-IdNr.
+                    <input type="text" th:field="*{vatId}" placeholder="ATU12345678">
+                </label>
+                <label>
+                    IBAN
+                    <input type="text" th:field="*{iban}" placeholder="AT61 1904 3002 3457 3201" autocomplete="off">
+                </label>
+                <label>
+                    BIC
+                    <input type="text" th:field="*{bic}" placeholder="BKAUATWW">
+                </label>
+                <label>
+                    Срок за плащане (дни)
+                    <input type="number" min="1" max="365" th:field="*{paymentTermDays}">
+                    <small class="field-error" th:errors="*{paymentTermDays}"></small>
+                </label>
+                <label class="full-width">
+                    Финален текст в офертата
+                    <textarea rows="3" th:field="*{footerNote}" placeholder="Vielen Dank für Ihr Vertrauen."></textarea>
+                    <small class="field-error" th:errors="*{footerNote}"></small>
+                </label>
+            </div>
+        </section>
+
+        <div class="form-actions sticky-actions">
+            <a class="button button-ghost" th:href="@{/}">Отказ</a>
+            <button class="button" type="submit">Запази фирмения профил</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

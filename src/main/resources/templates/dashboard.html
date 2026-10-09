@@ -14,6 +14,14 @@
         <a class="button" th:href="@{/offers/new}">Създай оферта</a>
     </section>
 
+    <div class="notice onboarding-notice" th:unless="${companyProfileConfigured}">
+        <div>
+            <strong>Подготви професионалните PDF оферти</strong>
+            <span>Добави фирмените, данъчните и банковите си данни.</span>
+        </div>
+        <a class="button button-small button-secondary" th:href="@{/company}">Попълни профила</a>
+    </div>
+
     <section class="stats-grid">
         <article class="stat-card">
             <span>Клиенти</span>

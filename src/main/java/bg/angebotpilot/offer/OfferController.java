@@ -1,7 +1,13 @@
 package bg.angebotpilot.offer;
 
+import bg.angebotpilot.company.CompanyProfile;
+import bg.angebotpilot.company.CompanyProfileService;
 import bg.angebotpilot.customer.CustomerRepository;
 import jakarta.validation.Valid;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.nio.charset.StandardCharsets;
+
 @Controller
 @RequestMapping("/offers")
 public class OfferController {
@@ -20,13 +28,19 @@ public class OfferController {
     private final OfferRepository offerRepository;
     private final CustomerRepository customerRepository;
     private final OfferService offerService;
+    private final CompanyProfileService companyProfileService;
+    private final OfferPdfService offerPdfService;
 
     public OfferController(OfferRepository offerRepository,
                            CustomerRepository customerRepository,
-                           OfferService offerService) {
+                           OfferService offerService,
+                           CompanyProfileService companyProfileService,
+                           OfferPdfService offerPdfService) {
         this.offerRepository = offerRepository;
         this.customerRepository = customerRepository;
         this.offerService = offerService;
+        this.companyProfileService = companyProfileService;
+        this.offerPdfService = offerPdfService;
     }
 
     @GetMapping
@@ -72,7 +86,25 @@ public class OfferController {
     public String details(@PathVariable Long id, Model model) {
         model.addAttribute("offer", offerService.getDetailed(id));
         model.addAttribute("statuses", OfferStatus.values());
+        model.addAttribute("companyProfile", companyProfileService.findProfile().orElse(null));
         return "offers/detail";
+    }
+
+    @GetMapping("/{id}/pdf")
+    public ResponseEntity<byte[]> downloadPdf(@PathVariable Long id) {
+        Offer offer = offerService.getDetailed(id);
+        CompanyProfile profile = companyProfileService.requireProfile();
+        byte[] pdf = offerPdfService.generate(offer, profile);
+        String fileName = "Angebot-" + offer.getOfferNumber().replaceAll("[^A-Za-z0-9._-]", "_") + ".pdf";
+
+        ContentDisposition disposition = ContentDisposition.attachment()
+                .filename(fileName, StandardCharsets.UTF_8)
+                .build();
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION, disposition.toString())
+                .contentLength(pdf.length)
+                .body(pdf);
     }
 
     @PostMapping("/{id}/status")

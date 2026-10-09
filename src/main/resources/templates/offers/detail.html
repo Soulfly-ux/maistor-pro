@@ -8,28 +8,46 @@
     <div th:replace="~{fragments :: flash}"></div>
     <div class="document-actions">
         <a class="text-link" th:href="@{/offers}">← Всички оферти</a>
-        <form class="status-form" th:action="@{/offers/{id}/status(id=${offer.id})}" method="post">
-            <label for="offer-status">Статус</label>
-            <select id="offer-status" name="status" onchange="this.form.submit()">
-                <option th:each="status : ${statuses}"
-                        th:value="${status}"
-                        th:text="${status.label}"
-                        th:selected="${status == offer.status}"></option>
-            </select>
-        </form>
+        <div class="document-action-group">
+            <form class="status-form" th:action="@{/offers/{id}/status(id=${offer.id})}" method="post">
+                <label for="offer-status">Статус</label>
+                <select id="offer-status" name="status" onchange="this.form.submit()">
+                    <option th:each="status : ${statuses}"
+                            th:value="${status}"
+                            th:text="${status.label}"
+                            th:selected="${status == offer.status}"></option>
+                </select>
+            </form>
+            <a class="button button-small" th:if="${companyProfile != null}"
+               th:href="@{/offers/{id}/pdf(id=${offer.id})}">Свали PDF</a>
+        </div>
+    </div>
+
+    <div class="notice" th:if="${companyProfile == null}">
+        За да свалиш офертата като PDF, първо попълни
+        <a th:href="@{/company}">фирмения профил →</a>
     </div>
 
     <article class="offer-document">
         <header class="document-header">
             <div>
                 <p class="document-brand">ANGEBOTPILOT</p>
-                <h1>Angebot</h1>
+                <div class="document-sender" th:if="${companyProfile != null}">
+                    <h2 th:text="${companyProfile.companyName}">Petrov Ausbau e.U.</h2>
+                    <div th:if="${companyProfile.ownerName != null}" th:text="${companyProfile.ownerName}">Ivan Petrov</div>
+                    <div th:text="${companyProfile.street}">Musterstraße 12</div>
+                    <div th:text="${companyProfile.postalCode + ' ' + companyProfile.city}">1010 Wien</div>
+                    <div th:text="${companyProfile.country}">Österreich</div>
+                </div>
             </div>
-            <dl>
-                <div><dt>Angebotsnummer</dt><dd th:text="${offer.offerNumber}">ANG-2026-0001</dd></div>
-                <div><dt>Datum</dt><dd th:text="${#temporals.format(offer.issueDate, 'dd.MM.yyyy')}">01.01.2026</dd></div>
-                <div><dt>Gültig bis</dt><dd th:text="${#temporals.format(offer.validUntil, 'dd.MM.yyyy')}">15.01.2026</dd></div>
-            </dl>
+            <div>
+                <h1>Angebot</h1>
+                <dl>
+                    <div><dt>Angebotsnummer</dt><dd th:text="${offer.offerNumber}">ANG-2026-0001</dd></div>
+                    <div><dt>Datum</dt><dd th:text="${#temporals.format(offer.issueDate, 'dd.MM.yyyy')}">01.01.2026</dd></div>
+                    <div><dt>Gültig bis</dt><dd th:text="${#temporals.format(offer.validUntil, 'dd.MM.yyyy')}">15.01.2026</dd></div>
+                </dl>
+            </div>
         </header>
 
         <section class="document-customer">
@@ -38,6 +56,7 @@
             <div th:if="${offer.customer.companyName != null and !offer.customer.companyName.isBlank()}" th:text="${offer.customer.name}">Ivan Petrov</div>
             <div th:if="${offer.customer.street != null and !offer.customer.street.isBlank()}" th:text="${offer.customer.street}">Straße 1</div>
             <div th:if="${offer.customer.city != null and !offer.customer.city.isBlank()}" th:text="${offer.customer.postalCode + ' ' + offer.customer.city}">1010 Wien</div>
+            <div th:if="${offer.customer.country != null and !offer.customer.country.isBlank()}" th:text="${offer.customer.country}">Österreich</div>
         </section>
 
         <h2 class="document-title" th:text="${offer.title}">Malerarbeiten</h2>
@@ -64,9 +83,17 @@
             <h3>Anmerkungen</h3>
             <p th:text="${offer.notes}">Zahlungsbedingungen</p>
         </section>
-    </article>
 
-    <p class="prototype-note">Това е визуален преглед. Фирмените данни и свалянето като PDF ще добавим в следващия етап.</p>
+        <footer class="document-footer" th:if="${companyProfile != null}">
+            <div>
+                <strong>Zahlungsinformationen</strong>
+                <span th:text="${'Zahlbar innerhalb von ' + companyProfile.paymentTermDays + ' Tagen.'}">Zahlbar innerhalb von 14 Tagen.</span>
+            </div>
+            <div th:if="${companyProfile.iban != null}"><strong>IBAN</strong><span th:text="${companyProfile.iban}">AT00</span></div>
+            <div th:if="${companyProfile.bic != null}"><strong>BIC</strong><span th:text="${companyProfile.bic}">BKAUATWW</span></div>
+            <div th:if="${companyProfile.vatId != null}"><strong>UID</strong><span th:text="${companyProfile.vatId}">ATU123</span></div>
+        </footer>
+    </article>
 </main>
 </body>
 </html>

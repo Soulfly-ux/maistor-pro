@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Вход')}"></head>
+<body class="login-page">
+<main class="login-shell">
+    <section class="login-brand-panel">
+        <a class="brand" th:href="@{/login}">
+            <span class="brand-mark">A</span>
+            <span>Angebot<strong>Pilot</strong></span>
+        </a>
+        <div>
+            <p class="eyebrow">Защитено работно място</p>
+            <h1>Клиентите и офертите ти остават лични.</h1>
+            <p>Влез, за да управляваш фирмата, услугите и персоналните оферти.</p>
+        </div>
+        <small>Публичните клиентски линкове не изискват вход.</small>
+    </section>
+
+    <section class="login-form-panel">
+        <div>
+            <p class="eyebrow">Администраторски достъп</p>
+            <h2>Вход за майстора</h2>
+            <p>Използвай данните за достъп, които са зададени при стартиране.</p>
+        </div>
+
+        <div class="flash error" th:if="${param.error}">Невалидно потребителско име или парола.</div>
+        <div class="flash success" th:if="${param.logout}">Излезе успешно.</div>
+
+        <form class="login-form" th:action="@{/login}" method="post">
+            <label>
+                Потребителско име
+                <input type="text" name="username" autocomplete="username" autofocus required>
+            </label>
+            <label>
+                Парола
+                <input type="password" name="password" autocomplete="current-password" required>
+            </label>
+            <button class="button" type="submit">Влез</button>
+        </form>
+    </section>
+</main>
+</body>
+</html>

@@ -22,7 +22,12 @@
         <a th:href="@{/offers}">Оферти</a>
         <a th:href="@{/company}">Фирма</a>
     </nav>
-    <a class="button button-small" th:href="@{/offers/new}">+ Нова оферта</a>
+    <div class="header-actions">
+        <a class="button button-small" th:href="@{/offers/new}">+ Нова оферта</a>
+        <form th:action="@{/logout}" method="post">
+            <button class="logout-button" type="submit">Изход</button>
+        </form>
+    </div>
 </header>
 
 <div class="flash success" th:fragment="flash" th:if="${successMessage}" th:text="${successMessage}"></div>

@@ -9,4 +9,5 @@ data/
 *.trace.db
 .DS_Store
 desktop.ini
+.env
 .refact/

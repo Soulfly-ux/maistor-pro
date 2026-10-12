@@ -298,6 +298,10 @@ input:focus, select:focus, textarea:focus { border-color: var(--brand); box-shad
 .share-panel p { margin-bottom: 14px; color: var(--muted); font-size: 13px; }
 .share-controls { display: grid; grid-template-columns: 1fr auto auto; gap: 9px; }
 .share-controls input { min-width: 0; color: var(--muted); font-size: 12px; }
+.email-share-row { margin-top: 12px; padding-top: 12px; display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 9px; border-top: 1px solid #cfe2de; }
+.email-share-row > div { display: flex; min-width: 0; flex-direction: column; }
+.email-share-row strong { color: var(--navy); font-size: 12px; }
+.email-share-row small { overflow: hidden; color: var(--muted); font-size: 11px; text-overflow: ellipsis; }
 .share-local-note { margin: 12px 0 0 !important; padding: 10px 12px; border-radius: 9px; color: #725818 !important; background: #fff6d9; font-size: 11px !important; }
 .customer-response-summary { margin-top: 14px; padding-top: 14px; border-top: 1px solid #bad8d1; }
 .customer-response-summary strong { margin-right: 8px; color: var(--navy); }
@@ -351,7 +355,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--brand); box-shad
     .offer-document { padding: 28px 20px; }
     .document-actions, .document-action-group, .onboarding-notice { align-items: stretch; flex-direction: column; }
     .document-footer { grid-template-columns: 1fr 1fr; }
-    .share-controls { grid-template-columns: 1fr; }
+    .share-controls, .email-share-row { grid-template-columns: 1fr; }
     .public-intro { align-items: stretch; flex-direction: column; }
     .public-metadata { grid-template-columns: 1fr; }
     .public-response-actions { flex-direction: column-reverse; }

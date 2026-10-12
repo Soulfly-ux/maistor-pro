@@ -42,6 +42,16 @@
             <a class="button button-small button-ghost" target="_blank" rel="noopener"
                th:href="@{/a/{token}(token=${offer.publicToken})}">Преглед</a>
         </div>
+        <div class="email-share-row"
+             th:if="${offer.customer.email != null and !offer.customer.email.isBlank()}"
+             th:attr="data-email=${offer.customer.email},data-customer=${offer.customer.name},data-number=${offer.offerNumber},data-company=${companyProfile.companyName}">
+            <div>
+                <strong>Готов имейл на немски</strong>
+                <small th:text="${offer.customer.email}">kunde@example.at</small>
+            </div>
+            <a class="button button-small button-secondary" id="client-email-link" href="#">Подготви имейл</a>
+            <button class="button button-small button-ghost" id="copy-email-text" type="button">Копирай текста</button>
+        </div>
         <p class="share-local-note" id="share-local-note" hidden>
             Адрес с <strong>localhost</strong> работи само на този компютър. Когато публикуваме приложението, линкът ще може да се изпраща на клиента.
         </p>
@@ -119,26 +129,6 @@
         </footer>
     </article>
 </main>
-<script>
-    const shareInput = document.querySelector('#client-share-link');
-    const copyButton = document.querySelector('#copy-client-link');
-    const localNote = document.querySelector('#share-local-note');
-    if (shareInput && copyButton) {
-        shareInput.value = new URL(shareInput.dataset.path, window.location.origin).href;
-        if (localNote && ['localhost', '127.0.0.1'].includes(window.location.hostname)) {
-            localNote.hidden = false;
-        }
-        copyButton.addEventListener('click', async () => {
-            try {
-                await navigator.clipboard.writeText(shareInput.value);
-            } catch (error) {
-                shareInput.select();
-                document.execCommand('copy');
-            }
-            copyButton.textContent = 'Копирано';
-            setTimeout(() => copyButton.textContent = 'Копирай линка', 1600);
-        });
-    }
-</script>
+<script th:src="@{/js/offer-detail.js}"></script>
 </body>
 </html>

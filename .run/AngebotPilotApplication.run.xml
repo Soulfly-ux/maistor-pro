@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="AngebotPilotApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="maistor-pro" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="bg.angebotpilot.AngebotPilotApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

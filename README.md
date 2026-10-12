@@ -56,6 +56,27 @@ docker compose up --build
 `pom.xml` е главният Maven файл. Всички бъдещи промени по проекта ще бъдат
 записвани в същата папка и IntelliJ ще ги вижда автоматично.
 
+Използвай споделената Run Configuration `AngebotPilotApplication`. Правилният главен клас е:
+
+```text
+bg.angebotpilot.AngebotPilotApplication
+```
+
+Старото име `bg.maistorpro.MaistorProApplication` вече не съществува. Ако IntelliJ пази стара локална
+конфигурация, изтрий я от **Run → Edit Configurations**.
+
+## Стартиране в hosting платформа
+
+Препоръчително е платформата да използва `Dockerfile`. Ако изисква отделни команди, използвай:
+
+```text
+Build: mvn -DskipTests package
+Start: java -jar target/angebot-pilot-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod
+```
+
+Не задавай ръчно `bg.maistorpro.MaistorProApplication` като start command. Maven и Docker стартират executable JAR,
+чийто `Start-Class` е фиксиран на `bg.angebotpilot.AngebotPilotApplication`.
+
 ## Текущ MVP
 
 - управление на клиенти;
